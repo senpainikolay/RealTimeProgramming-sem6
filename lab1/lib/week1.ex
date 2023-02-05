@@ -27,10 +27,12 @@ defmodule Week1 do
     reverseList(t) ++ [h]
   end
 
+
   #EX4
-  def sumUniqueElements(a) do
+  def uniqueSum(a) do
     sum(Enum.filter(a, fn x -> checkUnique(a,x) == true  end ))
   end
+
   defp checkUnique(a,elem)  do
     firstDuplicateRemovedList = List.delete(a,elem)
     cond do
@@ -43,12 +45,18 @@ defmodule Week1 do
     h + sum(t)
   end
 
+  #EX 5
 
-
-
+  def extractRandomN(a,n) do
+    cond do
+      length(a) == n -> a
+      true -> extractRandomN( List.delete_at(a, :rand.uniform(length(a))-1), n)
+    end
+  end
 end
 
 IO.puts(Week1.isPrime(7))
 IO.puts(Week1.cylinderArea(3,4))
 IO.inspect(Week1.reverseList([1,2,3]))
-IO.inspect(Week1.sumUniqueElements([2,4,6]))
+IO.inspect(Week1.uniqueSum([1,2,4,8,4,2]))
+IO.inspect(Week1.extractRandomN([1,2,4,8,4],3))
