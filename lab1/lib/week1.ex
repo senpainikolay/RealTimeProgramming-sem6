@@ -53,10 +53,35 @@ defmodule Week1 do
       true -> extractRandomN( List.delete_at(a, :rand.uniform(length(a))-1), n)
     end
   end
+
+
+  # EX 6
+  def firstFibonacciElements(n) do
+    recFib([],1,n)
+  end
+
+  defp recFib(a,s,n) do
+    cond do
+      s == n+1 -> a
+      true -> recFib( a++[getN(s)],s+1,n)
+    end
+
+  end
+  defp getN(0), do: 0
+  defp getN(1), do: 1
+  defp getN(n), do: getN(n-1) + getN(n-2)
+
+
+
+
+
 end
 
-IO.puts(Week1.isPrime(7))
-IO.puts(Week1.cylinderArea(3,4))
-IO.inspect(Week1.reverseList([1,2,3]))
-IO.inspect(Week1.uniqueSum([1,2,4,8,4,2]))
-IO.inspect(Week1.extractRandomN([1,2,4,8,4],3))
+
+
+# IO.puts(Week1.isPrime(7))
+# IO.puts(Week1.cylinderArea(3,4))
+# IO.inspect(Week1.reverseList([1,2,3]))
+# IO.inspect(Week1.uniqueSum([1,2,4,8,4,2]))
+# IO.inspect(Week1.extractRandomN([1,2,4,8,4],3))
+IO.inspect(Week1.firstFibonacciElements(7) )
