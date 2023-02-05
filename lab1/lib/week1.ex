@@ -27,6 +27,23 @@ defmodule Week1 do
     reverseList(t) ++ [h]
   end
 
+  #EX4
+  def sumUniqueElements(a) do
+    sum(Enum.filter(a, fn x -> checkUnique(a,x) == true  end ))
+  end
+  defp checkUnique(a,elem)  do
+    firstDuplicateRemovedList = List.delete(a,elem)
+    cond do
+      elem in firstDuplicateRemovedList -> false
+      true -> true
+    end
+  end
+  defp sum([]), do: 0
+  defp sum([h|t] ) do
+    h + sum(t)
+  end
+
+
 
 
 end
@@ -34,3 +51,4 @@ end
 IO.puts(Week1.isPrime(7))
 IO.puts(Week1.cylinderArea(3,4))
 IO.inspect(Week1.reverseList([1,2,3]))
+IO.inspect(Week1.sumUniqueElements([2,4,6]))
