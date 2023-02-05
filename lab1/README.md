@@ -1,6 +1,5 @@
 # Real Time Programming Lab 1
-## Author
-* Nicolae Gherman, FAF-202.
+- Nicolae Gherman, FAF-202.
 ## Week 0
 * Printing Hellot PTR 
 * Add asserting unit test :). 
