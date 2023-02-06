@@ -71,6 +71,35 @@ defmodule Week1 do
   defp getN(1), do: 1
   defp getN(n), do: getN(n-1) + getN(n-2)
 
+  #EX 7
+
+  def translator(s) do
+    d = %{ "mama" => "mother", "papa" => "father"}
+    space_string(translate(String.split(s), d))
+  end
+
+  defp space_string([]),do: []
+  defp space_string([h|t]) do
+    ["#{h} "]  ++ space_string(t)
+  end
+
+  defp translate([],_),do: []
+  defp translate([h|t],d) do
+    [translateWord(h,d)] ++ translate(t,d)
+  end
+
+  defp translateWord(s,d) do
+    ok  = Map.fetch(d,s)
+    cond do
+      ok == :error  -> s
+      true -> {_,val} = Map.fetch(d,s);val
+    end
+   end
+
+
+
+
+
 
 
 
@@ -84,4 +113,5 @@ end
 # IO.inspect(Week1.reverseList([1,2,3]))
 # IO.inspect(Week1.uniqueSum([1,2,4,8,4,2]))
 # IO.inspect(Week1.extractRandomN([1,2,4,8,4],3))
-IO.inspect(Week1.firstFibonacciElements(7) )
+# IO.inspect(Week1.firstFibonacciElements(7) )
+IO.puts(Week1.translator("mama is with papa"))
