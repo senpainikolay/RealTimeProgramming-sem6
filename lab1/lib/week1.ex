@@ -97,6 +97,49 @@ defmodule Week1 do
    end
 
 
+   #EX 8
+
+   def smallestNumber(a,b,c) do
+    [h|t] =  Enum.sort([ a,b,c])
+    cond do
+      h == 0 -> [h2|t2] = t; [ h2 | [h | t2]]
+      true -> [h|t]
+    end
+   end
+
+
+   # EX9
+   def rotateLeft(a,n) do
+    rotateMe(a,n,0)
+   end
+
+   defp rotateMe([h|t],n,c) do
+    cond do
+      c == n -> [h|t]
+      true -> rotateMe(t ++ [h], n, c+1)
+    end
+   end
+
+
+   #EX10
+
+   def listRightAngleTriangles do
+    rangeTuples = for x <-1..20, y <- 1..20, z <-1..20, do: {x,y,z}
+    recParse(rangeTuples)
+   end
+
+   defp recParse([]),do: []
+   defp recParse([h|t]) do
+    filterTuples(h) ++ recParse(t)
+   end
+
+   defp filterTuples(x)  do
+    {a,b,c} = x
+    cond do
+      a**2 +  b**2 ==  c**2 -> [x]
+      true -> []
+    end
+   end
 
 
 
@@ -114,4 +157,7 @@ end
 # IO.inspect(Week1.uniqueSum([1,2,4,8,4,2]))
 # IO.inspect(Week1.extractRandomN([1,2,4,8,4],3))
 # IO.inspect(Week1.firstFibonacciElements(7) )
-IO.puts(Week1.translator("mama is with papa"))
+# IO.puts(Week1.translator("mama is with papa"))
+#IO.inspect(Week1.smallestNumber(2,1,0))
+#IO.inspect(Week1.rotateLeft([1,2,4,8,4],3))
+# IO.inspect(Week1.listRightAngleTriangles())
