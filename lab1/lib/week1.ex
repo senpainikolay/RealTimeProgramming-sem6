@@ -142,7 +142,7 @@ defmodule Week1 do
    end
 
   ######################################### MAIN #####################################################################################################
-   #EX1
+   #EX11
    def removeConsecutiveDuplicates([]), do: []
    def removeConsecutiveDuplicates([h|t]) do
    cond do
@@ -160,6 +160,26 @@ defmodule Week1 do
       end
    end
   end
+
+  #EX12
+
+  def lineWords(a) do
+    Enum.filter(a, fn x -> lookUpCharListWord(String.to_charlist(x))  end)
+  end
+  def lookUpCharListWord(a) do
+    d = %{ :a => "qwertyuiopQWERTYUIOP", :b => "asdfghjklASDFGHJKL",:c => "zxcvbnmZXCVBNM"}
+    cond do
+      a == Enum.filter(a, fn x -> isItInRow(x,d[:a]) end) -> true
+      a == Enum.filter(a, fn x -> isItInRow(x,d[:b]) end) -> true
+      a == Enum.filter(a, fn x -> isItInRow(x,d[:c]) end) -> true
+      true -> false
+    end
+  end
+  def isItInRow(a,d) do
+    Enum.any?(String.to_charlist(d), fn x -> x == a end)
+  end
+
+
 
 
 
@@ -186,4 +206,5 @@ end
 #IO.inspect(Week1.smallestNumber(2,1,0))
 #IO.inspect(Week1.rotateLeft([1,2,4,8,4],3))
 # IO.inspect(Week1.listRightAngleTriangles())
-IO.inspect(Week1.removeConsecutiveDuplicates([1,2,2,2,4,8,4]))
+#IO.inspect(Week1.removeConsecutiveDuplicates([1,2,2,2,4,8,4]))
+IO.inspect(Week1.lineWords(["Hello", "Alaska", "Dad", "Peace"]))
