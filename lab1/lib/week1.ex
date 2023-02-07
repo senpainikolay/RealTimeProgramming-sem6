@@ -223,11 +223,55 @@ defmodule Week1 do
       ok == :error  -> currentMap = Map.put(currentMap, sw, [w]); currentMap
       true -> currentMap =   Map.update!(currentMap, sw, &(&1 ++ [w])); currentMap
     end
-
-
   end
 
+  ######################################################### BONUS ##############################################################
 
+
+#
+# EX 16
+#
+
+
+ def commonPrefix(a) do
+    kek =   Map.to_list(commonPrefix(a,%{}))
+    {_, maxCounter} =  Enum.max_by(kek, fn x -> {_,c} = x; c end)
+    maxCounterList =  Enum.filter( kek, fn x -> {_,c} = x; c == maxCounter end )
+    Enum.max_by(maxCounterList, fn x -> {a,_} = x; a = List.to_string(a); String.length(a) end)
+ end
+
+ # return a map with counter of each prefix/met words actually :)
+ def commonPrefix([], map), do: map
+  def  commonPrefix([h|t],map) do
+    descomposedW = descomposeWord([],String.to_charlist(h),[])
+    returnedMap = commonPrefixMap(map,descomposedW)
+    commonPrefix(t,returnedMap)
+
+ end
+
+
+
+ ## Would return a list of splitted word ['f', 'fl', 'flo' .... 'flower']
+
+ defp descomposeWord(_,[],finalRes), do: finalRes
+ defp descomposeWord(res,[h|t], finalRes) do
+   new =  res ++ [h]
+   descomposeWord(new,t, finalRes ++ [new])
+end
+ ## Same logic as  in ex 15
+ defp commonPrefixMap(map,[]), do: map
+ defp commonPrefixMap(map,[h|t]) do
+   newMap = buildPrefixMap(map,[h])
+   commonPrefixMap(newMap,t)
+ end
+
+ def buildPrefixMap(currentMap,w) do
+   ok  = Map.fetch(currentMap,w)
+   cond do
+     ok == :error  -> currentMap = Map.put(currentMap, w, 1); currentMap
+     true -> currentMap =   Map.update!(currentMap, w, &(&1 + 1)); currentMap
+   end
+ end
 
 
 
@@ -251,4 +295,5 @@ end
 #IO.puts(Week1.encode("kekFaf",4))
 # IO.inspect(Week1.decode("oiojej",4))
 #IO.inspect(Week1.lettersCombinations("23"))
-IO.inspect(Week1.groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]))
+#IO.inspect(Week1.groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]))
+IO.inspect(Week1.commonPrefix(["flower" ,"alow" ,"flight"]))
