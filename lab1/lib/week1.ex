@@ -126,7 +126,7 @@ defmodule Week1 do
    def listRightAngleTriangles do
     rangeTuples = for x <-1..20, y <- 1..20, z <-1..20, do: {x,y,z}
     recParse(rangeTuples)
-   end
+  end
 
    defp recParse([]),do: []
    defp recParse([h|t]) do
@@ -140,6 +140,31 @@ defmodule Week1 do
       true -> []
     end
    end
+
+  ######################################### MAIN #####################################################################################################
+   #EX1
+   def removeConsecutiveDuplicates([]), do: []
+   def removeConsecutiveDuplicates([h|t]) do
+   cond do
+     length(t) >1 -> [h2|t2] = t;
+     if h==h2 do
+       removeConsecutiveDuplicates(t2)
+     else
+      [h]++removeConsecutiveDuplicates(t)
+     end
+     true ->
+      if [h] == t do
+        []
+      else
+        [h]++t
+      end
+   end
+  end
+
+
+
+
+
 
 
 
@@ -161,3 +186,4 @@ end
 #IO.inspect(Week1.smallestNumber(2,1,0))
 #IO.inspect(Week1.rotateLeft([1,2,4,8,4],3))
 # IO.inspect(Week1.listRightAngleTriangles())
+IO.inspect(Week1.removeConsecutiveDuplicates([1,2,2,2,4,8,4]))
