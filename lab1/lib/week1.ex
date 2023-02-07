@@ -216,7 +216,7 @@ defmodule Week1 do
     groupAnagrams(newMap,t)
   end
 
-  def buildMap(currentMap,w) do
+  defp buildMap(currentMap,w) do
     sw = Enum.sort(String.to_charlist(w))
     ok  = Map.fetch(currentMap,sw)
     cond do
@@ -241,8 +241,8 @@ defmodule Week1 do
  end
 
  # return a map with counter of each prefix/met words actually :)
- def commonPrefix([], map), do: map
-  def  commonPrefix([h|t],map) do
+ defp commonPrefix([], map), do: map
+  defp  commonPrefix([h|t],map) do
     descomposedW = descomposeWord([],String.to_charlist(h),[])
     returnedMap = commonPrefixMap(map,descomposedW)
     commonPrefix(t,returnedMap)
@@ -265,13 +265,14 @@ end
    commonPrefixMap(newMap,t)
  end
 
- def buildPrefixMap(currentMap,w) do
+ defp buildPrefixMap(currentMap,w) do
    ok  = Map.fetch(currentMap,w)
    cond do
      ok == :error  -> currentMap = Map.put(currentMap, w, 1); currentMap
      true -> currentMap =   Map.update!(currentMap, w, &(&1 + 1)); currentMap
    end
  end
+
 
 
 
