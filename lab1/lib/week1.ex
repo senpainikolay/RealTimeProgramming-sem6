@@ -190,6 +190,25 @@ defmodule Week1 do
     Enum.map(String.to_charlist(s), fn x -> rem(x-n-97,26)+97 end)
   end
 
+  #EX14
+
+
+  def lettersCombinations(s) do
+    d = %{ 50 => "abc", 51 => "def", 52 => "ghi", 53 => "jkl", 54 => "mno", 55 => "pqrs", 56 => "tuv",  57 => "wxyz"}
+    group(String.to_charlist(s),d)
+  end
+  def group([h|t],d), do: group(String.to_charlist(d[h]),t,d)
+  def group(res,[] ,_), do: res
+  def group(res,[h|t] ,d) do
+    new  = for x <- res, y <- String.to_charlist(d[h]), do: List.flatten([x,y])
+     group(new,t,d)
+  end
+
+
+
+
+
+
 
 
 
@@ -223,5 +242,6 @@ end
 # IO.inspect(Week1.listRightAngleTriangles())
 #IO.inspect(Week1.removeConsecutiveDuplicates([1,2,2,2,4,8,4]))
 #IO.inspect(Week1.lineWords(["Hello", "Alaska", "Dad", "Peace"]))
-IO.inspect(Week1.encode("kekFaf",4))
-IO.inspect(Week1.decode("oiojej",4))
+#IO.puts(Week1.encode("kekFaf",4))
+# IO.inspect(Week1.decode("oiojej",4))
+IO.inspect(Week1.lettersCombinations("23"))
