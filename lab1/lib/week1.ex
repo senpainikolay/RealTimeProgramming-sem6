@@ -197,29 +197,35 @@ defmodule Week1 do
     d = %{ 50 => "abc", 51 => "def", 52 => "ghi", 53 => "jkl", 54 => "mno", 55 => "pqrs", 56 => "tuv",  57 => "wxyz"}
     group(String.to_charlist(s),d)
   end
-  def group([h|t],d), do: group(String.to_charlist(d[h]),t,d)
-  def group(res,[] ,_), do: res
-  def group(res,[h|t] ,d) do
+  defp group([h|t],d), do: group(String.to_charlist(d[h]),t,d)
+  defp group(res,[] ,_), do: res
+  defp group(res,[h|t] ,d) do
     new  = for x <- res, y <- String.to_charlist(d[h]), do: List.flatten([x,y])
      group(new,t,d)
   end
 
 
+  #EX15
+
+  def  groupAnagrams(a) do
+     groupAnagrams(%{},a)
+  end
+  defp groupAnagrams(map,[]), do: map
+  defp groupAnagrams(map,[h|t]) do
+    newMap = buildMap(map,h)
+    groupAnagrams(newMap,t)
+  end
+
+  def buildMap(currentMap,w) do
+    sw = Enum.sort(String.to_charlist(w))
+    ok  = Map.fetch(currentMap,sw)
+    cond do
+      ok == :error  -> currentMap = Map.put(currentMap, sw, [w]); currentMap
+      true -> currentMap =   Map.update!(currentMap, sw, &(&1 ++ [w])); currentMap
+    end
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  end
 
 
 
@@ -244,4 +250,5 @@ end
 #IO.inspect(Week1.lineWords(["Hello", "Alaska", "Dad", "Peace"]))
 #IO.puts(Week1.encode("kekFaf",4))
 # IO.inspect(Week1.decode("oiojej",4))
-IO.inspect(Week1.lettersCombinations("23"))
+#IO.inspect(Week1.lettersCombinations("23"))
+IO.inspect(Week1.groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]))
