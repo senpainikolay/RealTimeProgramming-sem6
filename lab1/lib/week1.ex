@@ -166,7 +166,7 @@ defmodule Week1 do
   def lineWords(a) do
     Enum.filter(a, fn x -> lookUpCharListWord(String.to_charlist(x))  end)
   end
-  def lookUpCharListWord(a) do
+  defp lookUpCharListWord(a) do
     d = %{ :a => "qwertyuiopQWERTYUIOP", :b => "asdfghjklASDFGHJKL",:c => "zxcvbnmZXCVBNM"}
     cond do
       a == Enum.filter(a, fn x -> isItInRow(x,d[:a]) end) -> true
@@ -175,9 +175,24 @@ defmodule Week1 do
       true -> false
     end
   end
-  def isItInRow(a,d) do
+  defp isItInRow(a,d) do
     Enum.any?(String.to_charlist(d), fn x -> x == a end)
   end
+
+  #EX13
+
+  def encode(s,n) do
+    s = String.downcase(s)
+    Enum.map(String.to_charlist(s), fn x -> rem(x+n-97,26)+97 end)
+  end
+  def decode(s,n) do
+    s = String.downcase(s)
+    Enum.map(String.to_charlist(s), fn x -> rem(x-n-97,26)+97 end)
+  end
+
+
+
+
 
 
 
@@ -207,4 +222,6 @@ end
 #IO.inspect(Week1.rotateLeft([1,2,4,8,4],3))
 # IO.inspect(Week1.listRightAngleTriangles())
 #IO.inspect(Week1.removeConsecutiveDuplicates([1,2,2,2,4,8,4]))
-IO.inspect(Week1.lineWords(["Hello", "Alaska", "Dad", "Peace"]))
+#IO.inspect(Week1.lineWords(["Hello", "Alaska", "Dad", "Peace"]))
+IO.inspect(Week1.encode("kekFaf",4))
+IO.inspect(Week1.decode("oiojej",4))
