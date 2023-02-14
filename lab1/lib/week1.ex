@@ -295,6 +295,6 @@ end
 #IO.inspect(Week1.lineWords(["Hello", "Alaska", "Dad", "Peace"]))
 #IO.puts(Week1.encode("kekFaf",4))
 # IO.inspect(Week1.decode("oiojej",4))
-#IO.inspect(Week1.lettersCombinations("23"))
+#IO.inspect(Week1.lettersCombinations("234"))
 #IO.inspect(Week1.groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"]))
-IO.inspect(Week1.commonPrefix(["flower" ,"alow" ,"flight"]))
+#IO.inspect(Week1.commonPrefix(["flower" ,"alow" ,"flight"]))
