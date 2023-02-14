@@ -69,6 +69,85 @@ defmodule Week3 do
         end
       loop(average,counter)
     end
+  end
+
+
+  defmodule Task5 do
+
+    def new_queue() do
+      spawn(fn -> loop([]) end)
+    end
+
+    def push(pid, value), do: push_helper(pid,value);
+    def pop(pid), do: pop_helper(pid);
+
+
+    defp push_helper(pid, value) do
+      {_, val} = send(pid, {:push, value})
+      if val do
+        :ok
+      end
+    end
+
+    defp pop_helper(pid) do
+      send(pid, {:pop,self()})
+      receive do
+        val -> val
+      end
+    end
+
+    defp loop( current_queue) do
+      new_queue =
+        receive do
+          {:push, value} ->
+            [value | current_queue]
+
+          {:pop,caller} ->
+            [h | t ] = current_queue
+            send(caller, h)
+            t
+              _ ->
+             IO.puts("Invalid Command")
+        end
+      loop(new_queue)
+    end
+  end
+
+
+
+  defmodule Task6 do
+
+    def create_semaphore(val) do
+      spawn(fn -> sem(val) end)
+    end
+
+    def acquire(semaphore), do: acquire_helper(semaphore);
+    def release(semaphore), do: release_helper(semaphore);
+
+    defp acquire_helper(s) do
+      send(s, {:request, self()})
+      receive do
+        perm -> perm
+      end
+    end
+
+    defp release_helper(s) do
+      send(s, :release )
+    end
+
+    defp sem(n) when n == 0 do
+      receive do
+           {:request, caller} -> send(caller, :not_granted); sem(0)
+           :release -> sem(1)
+        end
+      end
+
+      defp sem(n) when n > 0  do
+          receive do
+          {:request, caller} -> send(caller, :granted); sem(n - 1)
+           :release ->  sem(n + 1)
+           end
+      end
 
   end
 
