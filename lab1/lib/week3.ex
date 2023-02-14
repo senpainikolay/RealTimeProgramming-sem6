@@ -153,6 +153,37 @@ defmodule Week3 do
 
 
 
+  defmodule Task7 do
+
+    def create_scheduler() do
+      spawn(fn -> main_loop() end)
+    end
+
+    defp main_loop() do
+      receive do
+        {:fail, s} -> IO.puts("Task fail"); send(self(),s); main_loop()
+        {:success,s} ->  IO.puts(s); main_loop()
+        val -> send(spawn(fn -> worker(val) end), self()); main_loop()
+      end
+    end
+
+    defp worker(s) do
+      randN = :rand.uniform(4)
+      caller =
+      receive do
+        cal -> cal
+      end
+      cond do
+        randN == 1 -> send(caller, {:success,"Task succesful : Miau"})
+        true -> send(caller, {:fail, s})
+      end
+    end
+
+
+  end
+
+
+
 
 
 
