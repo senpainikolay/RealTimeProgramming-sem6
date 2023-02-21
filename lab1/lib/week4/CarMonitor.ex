@@ -18,6 +18,7 @@ defmodule CarSupervisor do
         {:DOWN, _ref, :process, _pid, :normal} -> supervise(state)
         {:DOWN, ref, :process, _pid, _not_normal} ->
             {function, state} = Map.pop(state, ref)
+            send(:counteCrash, :incr )
             pid = spawn function
             ref = Process.monitor(pid)
             state = Map.put(state, ref,function)
@@ -93,6 +94,7 @@ defmodule WheelSupervisor do
           {:DOWN, _ref, :process, _pid, :normal} -> supervise(state)
           {:DOWN, ref, :process, _pid, _not_normal} ->
               {function, state} = Map.pop(state, ref)
+              send(:counteCrash, :incr )
               pid = spawn function
               ref = Process.monitor(pid)
               state = Map.put(state, ref,function)
@@ -107,7 +109,7 @@ defmodule WheelSupervisor do
 defmodule WheelSupervisor.WheelSensor do
   def run() do
     receive do
-      :exit -> :ok
+      :exit ->  :ok
     end
     run()
   end
@@ -148,6 +150,7 @@ main_pid = self()
     &CarSupervisor.CounterCrash.start/0
     ])
   end
+
 
 
   receive do
