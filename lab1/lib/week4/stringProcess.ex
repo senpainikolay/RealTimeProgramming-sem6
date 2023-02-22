@@ -29,37 +29,35 @@ end
 defmodule StringProcess.SpaceSpliter do
   def start() do
     Process.register(self(), :spaceSpliter)
-    spawn_link( fn -> StringProcess.DowncaseSwapper.start() end)
-    spawn_link( fn -> StringProcess.StringAssembly.start() end)
-
-
-    run()
+    pid1 = spawn_link( fn -> StringProcess.DowncaseSwapper.start() end)
+    run(pid1)
   end
-  defp run() do
+  defp run(pid1) do
     receive do
       {:split, s } ->
         arr = String.to_charlist(s)
-        splitS(arr,[])
-      :exit -> :ok
+        splitS(arr,[],pid1)
+      :exit -> raise "Exited Abnormaly!!! (actually called normally)"
     end
-    run()
+    run(pid1)
   end
 
-  defp splitS([],w) do
+  defp splitS([],w,pid1) do
+
     if w != [] do
-      send(:downcaseSwapper,{:downcase, List.to_string(w) })
+      send(pid1,{:downcase, List.to_string(w) })
     end
     :ok
   end
-  defp splitS([h|t],w) do
+  defp splitS([h|t],w,pid1) do
     cond do
       h == 32 ->
         if w != [] do
-          send(:downcaseSwapper,{:downcase, List.to_string(w) } )
+          send(pid1,{:downcase, List.to_string(w) } )
         end
-        splitS(t,[])
+        splitS(t,[],pid1)
 
-      true -> splitS(t,w ++ [h])
+      true -> splitS(t,w ++ [h],pid1)
     end
   end
 end
@@ -68,11 +66,12 @@ end
 defmodule StringProcess.DowncaseSwapper do
 
   def start() do
-    Process.register(self(), :downcaseSwapper)
-    run()
+    #Process.register(self(), :downcaseSwapper)
+    pidString = spawn_link( fn -> StringProcess.StringAssembly.start() end)
+    run(pidString)
   end
 
-  defp run() do
+  defp run(pidString) do
     receive do
       {:downcase, s  } ->
         downCaseString = String.downcase(s)
@@ -81,10 +80,10 @@ defmodule StringProcess.DowncaseSwapper do
         allPossibleCombinations = Enum.filter(range, fn x -> {idx1,idx2} = x;  filterIndexesByChars(idx1,idx2,indexMap) end )
         indexSwapMap = filterAllPossibleCombitaions(allPossibleCombinations,%{},%{})
         finalString = swapLetters(Map.to_list(indexSwapMap),String.to_charlist(downCaseString))
-        send(:transformerAssembly,{:addString, finalString})
+        send(pidString,{:addString, finalString})
       :exit -> raise "Exited Abnormaly!!! (actually called normally)"
     end
-    run()
+    run(pidString)
   end
   defp swapLetters([],finalArr), do: List.to_string(finalArr)
   defp swapLetters([h|t],finalArr) do
@@ -144,7 +143,7 @@ end
 
 defmodule StringProcess.StringAssembly do
   def start() do
-    Process.register(self(), :transformerAssembly)
+    #Process.register(self(), :transformerAssembly)
     run("")
   end
 
@@ -154,7 +153,7 @@ defmodule StringProcess.StringAssembly do
         finalString = finalString <> " " <> s
         IO.inspect(finalString)
         run(finalString)
-      :exit -> :ok
+      :exit -> raise "Exited Abnormaly!!! (actually called normally)"
     end
     run(finalString)
   end
@@ -179,6 +178,6 @@ end
 send(:spaceSpliter, {:split, "   ok   LOl   MoNster"})
 :timer.sleep(100)
 
-send(:downcaseSwapper, :exit)
+send(:spaceSpliter, :exit)
 :timer.sleep(2000)
-send(:spaceSpliter, {:split, "   ok   LOl   MoNster"})
+send(:spaceSpliter, {:split, "   ok   LOl  HSJADKNJ "})
