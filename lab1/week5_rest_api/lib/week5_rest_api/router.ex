@@ -13,7 +13,6 @@ defmodule Week5RestApi.Router do
   plug(:dispatch)
 
 
-
   get "/", do: send_resp(conn,200,"OK")
 
   get "/movies" do
